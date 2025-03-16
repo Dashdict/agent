@@ -91,15 +91,13 @@ func sendDataToAPI(apiURL, apiSecret string, stats SystemStats) error {
 }
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error laoding env: %v", err)
-	}
+	// Attempt to load the .env file, but ignore the error if it doesn't exist
+	_ = godotenv.Load()
 
 	apiURL := os.Getenv("API_URL")
 	apiSecret := os.Getenv("API_SECRET")
 	if apiURL == "" || apiSecret == "" {
-		log.Fatal("env ERROR")
+		log.Fatal("API_URL or API_SECRET environment variables are not set")
 	}
 
 	for {
@@ -117,7 +115,7 @@ func main() {
 
 		tempC, err := getTemperature()
 		if err != nil {
-			log.Printf("Temperature error : %v", err)
+			log.Printf("Temperature error: %v", err)
 			tempC = 0
 		}
 
